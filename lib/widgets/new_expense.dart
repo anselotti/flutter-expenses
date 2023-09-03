@@ -87,7 +87,7 @@ class _NewExpenseState extends State<NewExpense> {
             controller: _titleController,
             maxLength: 50,
             decoration: const InputDecoration(
-              label: Text('Title'),
+              label: Text('Kulun nimi'),
             ),
           ),
           Row(
@@ -98,7 +98,7 @@ class _NewExpenseState extends State<NewExpense> {
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     prefixText: '€ ',
-                    label: Text('Amount'),
+                    label: Text('Summa'),
                   ),
                 ),
               ),
@@ -110,7 +110,7 @@ class _NewExpenseState extends State<NewExpense> {
                   children: [
                     Text(
                       _selectedDate == null
-                          ? 'No date selected'
+                          ? 'Valitse pvm'
                           : formatter.format(_selectedDate!),
                     ),
                     IconButton(
@@ -132,7 +132,7 @@ class _NewExpenseState extends State<NewExpense> {
                       (category) => DropdownMenuItem(
                         value: category,
                         child: Text(
-                          category.name.toUpperCase(),
+                          categoryNames[category]!,
                         ),
                       ),
                     )
@@ -151,11 +151,11 @@ class _NewExpenseState extends State<NewExpense> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Cancel'),
+                child: const Text('Peruuta'),
               ),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: const Text('Add Expense'),
+                child: const Text('Lisää kulu'),
               ),
             ],
           ),

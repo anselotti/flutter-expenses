@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 final formatter = DateFormat.yMd();
 
-final uuid = Uuid();
+const uuid = Uuid();
 
 enum Category {
   food,
@@ -18,6 +18,13 @@ const categoryIcons = {
   Category.travel: Icons.flight_takeoff,
   Category.leisure: Icons.beach_access,
   Category.work: Icons.work,
+};
+
+const categoryNames = {
+  Category.food: 'Ruoka',
+  Category.travel: 'Matkustus',
+  Category.leisure: 'Huvi',
+  Category.work: 'Työ',
 };
 
 class Expense {

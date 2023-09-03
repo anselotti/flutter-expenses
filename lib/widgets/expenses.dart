@@ -13,28 +13,7 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  final List<Expense> _registeredExpenses = [
-    Expense(
-        title: 'Hockey Match',
-        amount: 25,
-        date: DateTime.now(),
-        category: Category.leisure),
-    Expense(
-        title: 'Big Mac',
-        amount: 11.50,
-        date: DateTime.now(),
-        category: Category.food),
-    Expense(
-        title: 'Slovenia Trip',
-        amount: 512,
-        date: DateTime.now(),
-        category: Category.travel),
-    Expense(
-        title: 'Flutter Course',
-        amount: 19.99,
-        date: DateTime.now(),
-        category: Category.work),
-  ];
+  final List<Expense> _registeredExpenses = [];
 
   void _openAddExpenseOverlayModal() {
     showModalBottomSheet(
@@ -52,16 +31,43 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _deleteExpense(Expense expense) {
+    final expenseIndex = _registeredExpenses.indexOf(expense);
     setState(() {
       _registeredExpenses.remove(expense);
     });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${expense.title} poistettu'),
+        duration: const Duration(seconds: 2),
+        action: SnackBarAction(
+          label: 'Peruuta',
+          onPressed: () {
+            setState(() {
+              _registeredExpenses.insert(expenseIndex, expense);
+            });
+          },
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = const Center(
+      child: Text('No expenses found. Start adding expenses!'),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpenseList(
+        expenses: _registeredExpenses,
+        onDeleteExpense: _deleteExpense,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Expenses'),
+        title: const Text('Kululaskuri'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -73,10 +79,7 @@ class _ExpensesState extends State<Expenses> {
         children: [
           const Text('Chart'),
           Expanded(
-            child: ExpenseList(
-              expenses: _registeredExpenses,
-              onDeleteExpense: _deleteExpense,
-            ),
+            child: mainContent,
           ),
         ],
       ),
